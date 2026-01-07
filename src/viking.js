@@ -62,31 +62,39 @@ class War {
     this.saxonArmy.push(saxonObj);
   }
 
-  vikingAttack(){
-    const lastSaxon = this.saxonArmy[this.saxonArmy.length - 1]
-    const firstViking = this.vikingArmy[0]
-
-    const vikingAtkSaxon = lastSaxon.receiveDamage(firstViking.attack());
-
-    if(lastSaxon.health <= 0){
-      this.saxonArmy.pop();
-    }
+  attackMovement(attackingArr, defendingArr){
+    const firstAttacker = attackingArr[0];
+    const lastDefender = defendingArr[defendingArr.length - 1];
     
-    return vikingAtkSaxon;
+    const attackAgainstDefense = lastDefender.receiveDamage(firstAttacker.attack());
+
+    if(lastDefender.health <= 0){
+      defendingArr.pop();
+    }
+
+    return attackAgainstDefense;
+  }
+
+  vikingAttack(){
+   return this.attackMovement(this.vikingArmy, this.saxonArmy);
   }
 
   saxonAttack(){
-    const lastViking = this.vikingArmy[this.vikingArmy.length - 1];
-    const firstSaxon = this.saxonArmy[0];
-
-    const saxonAtkViking = lastViking.receiveDamage(firstSaxon.attack());
-
-    if(lastViking.health <= 0){
-      this.vikingArmy.pop();
-    }
-
-    return saxonAtkViking;
+   return this.attackMovement(this.saxonArmy, this.vikingArmy);
   }
 
-  showStatus(){}
+
+  showStatus(){
+    if(this.saxonArmy.length === 0){
+      return `Vikings have won the war of the century!`
+    }
+
+    if(this.vikingArmy.length === 0){
+      return `Saxons have fought for their lives and survived another day...`
+    }
+
+    if(this.vikingArmy.length > 0 && this.saxonArmy.length > 0){
+      return `Vikings and Saxons are still in the thick of battle.`
+    }
+  }
 }
